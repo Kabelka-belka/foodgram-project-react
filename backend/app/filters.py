@@ -6,7 +6,7 @@ from .models import Recipe, Tag, Ingredient
 
 
 class IngredientFilter(SearchFilter):
-    """Специальный фильтр для ингредиентов"""
+    """Фильтр для ингредиентов. """
 
     search_param = 'name'
 
@@ -16,7 +16,7 @@ class IngredientFilter(SearchFilter):
 
 
 class MyFilterSet(rest_framework.FilterSet):
-    """Фильтр для Рецептов"""
+    """Фильтр для рецептов. """
 
     author = rest_framework.NumberFilter(field_name='author__id')
     tags = django_filters.ModelMultipleChoiceFilter(

@@ -14,7 +14,7 @@ User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
-    """Переопределение сериализатора для соответствия ТЗ"""
+    """Переопределение сериализатора. """
 
     pagination_class = CustomPagination
 
@@ -23,7 +23,7 @@ class CustomUserViewSet(UserViewSet):
 
 
 class FollowListMixin(mixins.ListModelMixin, viewsets.GenericViewSet):
-    """Отображениее списка модели подписок"""
+    """Отображениее списка подписок. """
 
     serializer_class = FollowSerializer
     pagination_class = CustomPagination
@@ -37,7 +37,7 @@ class FollowMixin(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
-    """Создание и удаление модели подписок"""
+    """Создание и удаление подписок. """
 
     serializer_class = FollowSerializer
     queryset = User.objects.all()
