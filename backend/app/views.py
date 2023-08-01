@@ -1,5 +1,4 @@
 from django.db.models import Sum
-from django.http.response import HttpResponse
 from rest_framework import (
     filters, permissions, status, viewsets)
 from rest_framework.response import Response
@@ -9,7 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 
 from .models import (
-    Tag, Recipe, ShoppingCart, Favorite, 
+    Tag, Recipe, ShoppingCart, Favorite,
     Ingredient, IngredientToRecipe)
 from .serializers import (
     RecipeCreateSerializer, ShoppingCartSerializer,
@@ -51,10 +50,10 @@ class RecipeWiewSet(viewsets.ModelViewSet):
         if self.request.method == 'GET':
             return RecipeReadSerializer
         return RecipeCreateSerializer
-    
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-    
+ 
     @action(
         detail=True,
         methods=["POST", "DELETE"],
@@ -96,7 +95,7 @@ class RecipeWiewSet(viewsets.ModelViewSet):
         elif self.favorite:
             serializer = FavoriteSerializer(obj)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     def remove(self, model, user, pk):
         obj = model.objects.filter(user=user, recipe__id=pk)
         if obj.exists():

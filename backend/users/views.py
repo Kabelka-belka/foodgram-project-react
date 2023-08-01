@@ -1,6 +1,5 @@
 from djoser.views import UserViewSet
 from rest_framework import mixins, viewsets
-from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
@@ -50,6 +49,6 @@ class FollowMixin(
             user=request.user, author=author).exists()
 
         if not instance:
-            print ('Вы не подписаны на этого пользователя')
+            print('Вы не подписаны на этого пользователя')
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)

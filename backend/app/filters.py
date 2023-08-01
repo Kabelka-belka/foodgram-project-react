@@ -17,7 +17,8 @@ class IngredientFilter(SearchFilter):
 class MyFilterSet(django_filters.rest_framework.FilterSet):
     """Фильтр для рецептов. """
 
-    author = django_filters.rest_framework.NumberFilter(field_name='author__id')
+    author = django_filters.rest_framework.NumberFilter(
+        field_name='author__id')
     tags = django_filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
         to_field_name='slug',

@@ -150,7 +150,7 @@ class Follow(models.Model):
                 name='unique_follow'
             ),
             models.CheckConstraint(
-                check=~Q(user=F('author')),
+                check=~models.Q(user=models.F('author')),
                 name='no_self_follow'
             )
         ]
