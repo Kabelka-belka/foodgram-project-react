@@ -41,7 +41,7 @@ class CustomUserSerializer(UserSerializer):
         )
 
     def get_is_subscribed(self, obj):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         if request:
             current_user = request.user
 

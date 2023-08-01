@@ -1,6 +1,5 @@
-from django_filters import rest_framework
-from rest_framework.filters import SearchFilter
 import django_filters
+from rest_framework.filters import SearchFilter
 
 from .models import Recipe, Tag, Ingredient
 
@@ -15,10 +14,10 @@ class IngredientFilter(SearchFilter):
         fields = ('name',)
 
 
-class MyFilterSet(rest_framework.FilterSet):
+class MyFilterSet(django_filters.rest_framework.FilterSet):
     """Фильтр для рецептов. """
 
-    author = rest_framework.NumberFilter(field_name='author__id')
+    author = django_filters.rest_framework.NumberFilter(field_name='author__id')
     tags = django_filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
         to_field_name='slug',

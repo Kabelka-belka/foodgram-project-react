@@ -39,7 +39,7 @@ class ShoppingCartSerializer(ShortResipeSerializer):
     """Сериализатор списка покупок"""
 
     def validate(self, data):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         current_recipe_id = self.context.get('request').parser_context.get(
             'kwargs').get('recipe_id')
         recipe = get_object_or_404(Recipe, pk=current_recipe_id)
@@ -53,7 +53,7 @@ class ShoppingCartSerializer(ShortResipeSerializer):
         return data
 
     def create(self, validated_data):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         current_user = request.user
         current_recipe_id = self.context.get('request').parser_context.get(
             'kwargs').get('recipe_id')
@@ -66,7 +66,7 @@ class FavoriteSerializer(ShortResipeSerializer):
     """Сериализатор избранного"""
 
     def validate(self, data):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         current_recipe_id = self.context.get('request').parser_context.get(
             'kwargs').get('recipe_id')
         recipe = get_object_or_404(Recipe, pk=current_recipe_id)
@@ -80,7 +80,7 @@ class FavoriteSerializer(ShortResipeSerializer):
         return data
 
     def create(self, validated_data):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         current_user = request.user
         current_recipe_id = self.context.get('request').parser_context.get(
             'kwargs').get('recipe_id')
@@ -115,7 +115,7 @@ class IngredientToRecipeSerializer(serializers.ModelSerializer):
 class RecipeReadSerializer(serializers.ModelSerializer):
     """Сериализатор чтения рецептов"""
 
-    tags = serializers.SerializerMethodField()
+    tags = TegSerializer(read_only=False, many=True)
     ingredients = IngredientToRecipeSerializer(
         many=True,
         source='ingredienttorecipe')
@@ -141,13 +141,8 @@ class RecipeReadSerializer(serializers.ModelSerializer):
     read_only_fields = ('id', 'author', 'is_favorited',
                         'is_favorited')
 
-    def get_tags(self, obj):
-        return TegSerializer(
-            Tag.objects.filter(recipes=obj),
-            many=True,).data
-
     def get_is_in_shopping_cart(self, obj):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         if request:
             current_user = request.user
         return ShoppingCart.objects.filter(
@@ -156,7 +151,7 @@ class RecipeReadSerializer(serializers.ModelSerializer):
         ).exists()
 
     def get_is_favorited(self, obj):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         if request:
             current_user = request.user
         return Favorite.objects.filter(
@@ -191,10 +186,6 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
     def validate_tags(self, tags):
         tags_list = []
         for tag in tags:
-            if not Tag.objects.filter(id=tag.id).exists():
-                raise serializers.ValidationError(
-                    'Указанного тега не существует')
-        for tag in tags:
             if tag in tags_list:
                 raise serializers.ValidationError(
                     'Теги должны быть уникальны')
@@ -216,11 +207,11 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
     def validate_ingredients(self, data):
         if not data:
             raise serializers.ValidationError(
-                'Отсутствуют ингридиенты!'
+                'Отсутствуют ингредиенты!'
             )
-        ingredients = self.initial_data.get('ingredients')
         ingredients_list = []
-        for ingredient in ingredients:
+        for ingredient in data:
+            ingredient = get_object_or_404(Ingredient, id=item['id'])
             ingredient_id = ingredient['id']
             if ingredient_id in ingredients_list:
                 raise serializers.ValidationError(
@@ -235,18 +226,13 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def create_ingredients(recipe, ingredients):
-        ingredient_liist = []
-        for ingredient_data in ingredients:
-            ingredient_obj = Ingredient.objects.get(
-                id=ingredient_data.get('ingredient')['id'])
-            ingredient_liist.append(
-                IngredientToRecipe(
-                    ingredient=ingredient_obj,
-                    amount=ingredient_data.get('amount'),
-                    recipe=recipe,
-                )
-            )
-        IngredientToRecipe.objects.bulk_create(ingredient_liist)
+        IngredientToRecipe.objects.bulk_create(
+            [IngredientToRecipe(
+                recipe=recipe,
+                ingredient=get_object_or_404(Ingredient, pk=ingredient['id']),
+                amount=ingredient['amount']
+            ) for ingredient in ingredients]
+        )
 
     def create(self, validated_data):
         request = self.context.get('request', None)
@@ -313,7 +299,7 @@ class FollowSerializer(CustomUserSerializer):
         return Recipe.objects.filter(author=obj).count()
 
     def create(self, validated_data):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         author_id = self.context.get('request').parser_context.get(
             'kwargs').get('user_id')
 

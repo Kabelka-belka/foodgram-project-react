@@ -47,11 +47,9 @@ class FollowMixin(
         author = get_object_or_404(User, pk=user_id)
 
         instance = Follow.objects.filter(
-            user=request.user, author=author)
+            user=request.user, author=author).exists()
 
         if not instance:
-            raise serializers.ValidationError(
-                'Вы не подписаны на этого пользователя'
-            )
+            print ('Вы не подписаны на этого пользователя')
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)

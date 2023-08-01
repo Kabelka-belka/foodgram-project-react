@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from colorfield.fields import ColorField
-from django.db.models import F, Q, UniqueConstraint
 from django.forms import ValidationError
 
 from django.contrib.auth import get_user_model
@@ -120,12 +119,11 @@ class IngredientToRecipe(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Связь рецепта и ингредиента'
-        verbose_name_plural = 'Связи рецептов и ингредиентов'
-
-    def __str__(self):
-        return (f'Связь ингредиента {self.ingredient.name}',
-                f'и рецепта: {self.recipe.name}')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['ingredient', 'recipe'],
+                name='Ingredient and Recipe in IngredientAmount is unique')
+        ]
 
 
 class Follow(models.Model):
@@ -147,7 +145,7 @@ class Follow(models.Model):
     class Meta:
         ordering = ('-id', )
         constraints = [
-            UniqueConstraint(
+            models.UniqueConstraint(
                 fields=('user', 'author'),
                 name='unique_follow'
             ),
@@ -192,7 +190,7 @@ class Favorite(models.Model):
 
     class Meta:
         constraints = [
-            UniqueConstraint(
+            models.UniqueConstraint(
                 fields=('user', 'recipe'),
                 name='user_favorite_unique'
             )
@@ -223,7 +221,7 @@ class ShoppingCart(models.Model):
 
     class Meta:
         constraints = [
-            UniqueConstraint(
+            models.UniqueConstraint(
                 fields=('user', 'recipe'),
                 name='user_shopping_unique'
             )

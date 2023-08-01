@@ -1,18 +1,16 @@
 from django.db.models import Sum
 from django.http.response import HttpResponse
-from rest_framework import mixins, viewsets
+from rest_framework import (
+    filters, permissions, status, viewsets)
 from rest_framework.response import Response
-from rest_framework import status
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
-from rest_framework import permissions
 
-from .models import Tag, Recipe, ShoppingCart, Favorite, Ingredient,\
-    IngredientToRecipe
+from .models import (
+    Tag, Recipe, ShoppingCart, Favorite, 
+    Ingredient, IngredientToRecipe)
 from .serializers import (
     RecipeCreateSerializer, ShoppingCartSerializer,
     FavoriteSerializer, IngredientSerializer, TegSerializer,
@@ -24,7 +22,7 @@ from .pagination import CustomPagination
 User = get_user_model()
 
 
-class IngredientMixin(viewsets.ReadOnlyModelViewSet):
+class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """Отображение одного ингредиента или списка"""
 
     queryset = Ingredient.objects.all()
@@ -34,63 +32,7 @@ class IngredientMixin(viewsets.ReadOnlyModelViewSet):
     search_fields = ('^name', )
 
 
-class ShoppingCartMixin(
-    mixins.DestroyModelMixin,
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet
-):
-    """Создание и удаление объекта списка покупок"""
-
-    queryset = Recipe.objects.all()
-    serializer_class = ShoppingCartSerializer
-    permission_classes = (permissions.IsAuthenticated, )
-
-    def delete(self, request, *args, **kwargs):
-        recipe_id = self.kwargs.get('recipe_id')
-        recipe = get_object_or_404(Recipe, pk=recipe_id)
-
-        instance = ShoppingCart.objects.filter(
-            user=request.user, recipe=recipe)
-
-        if not instance:
-            raise serializers.ValidationError(
-                'В корзине нет данного товара'
-            )
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class FavoriteMixin(
-    mixins.DestroyModelMixin,
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet
-):
-    """Создание и удаление объекта избранного"""
-
-    queryset = Recipe.objects.all()
-    serializer_class = FavoriteSerializer
-    permission_classes = (permissions.IsAuthenticated, )
-
-    def delete(self, request, *args, **kwargs):
-        recipe_id = self.kwargs.get('recipe_id')
-        recipe = get_object_or_404(Recipe, pk=recipe_id)
-
-        instance = Favorite.objects.filter(
-            user=request.user, recipe=recipe)
-
-        if not instance:
-            raise serializers.ValidationError(
-                'В корзине нет данного товара'
-            )
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class TagViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet
-):
+class TagViewSet(viewsets.ReadOnlyModelViewSet):
     """Отображение одного тега или списка"""
 
     queryset = Tag.objects.all()
@@ -102,7 +44,6 @@ class RecipeWiewSet(viewsets.ModelViewSet):
 
     permission_classes = (AuthorIsRequestUserPermission, )
     queryset = Recipe.objects.all()
-    serializer_class = RecipeCreateSerializer
     filter_class = MyFilterSet
     pagination_class = CustomPagination
 
@@ -110,31 +51,58 @@ class RecipeWiewSet(viewsets.ModelViewSet):
         if self.request.method == 'GET':
             return RecipeReadSerializer
         return RecipeCreateSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+    
+    @action(
+        detail=True,
+        methods=["POST", "DELETE"],
+        permission_classes=[permissions.IsAuthenticated],
+    )
+    def favorite(self, request, pk):
+        if request.method == 'POST':
+            return self.save(Favorite, request.user, pk)
+        return self.remove(Favorite, request.user, pk)
 
-    @staticmethod
-    def send_message(ingredients):
-        """
-        Посылает сообщение дублирующее скачиваемый список
-        """
-        shopping_list = 'Купить в магазине:'
-        for ingredient in ingredients:
-            shopping_list += (
-                f"\n{ingredient['ingredient__name']} "
-                f"({ingredient['ingredient__measurement_unit']}) - "
-                f"{ingredient['amount']}")
-        file = 'shopping_list.txt'
-        response = HttpResponse(shopping_list, content_type='text/plain')
-        response['Content-Disposition'] = f'attachment; filename="{file}.txt"'
-        return response
+    @action(
+        detail=True,
+        methods=["POST", "DELETE"],
+        permission_classes=[permissions.IsAuthenticated],
+    )
+    def shopping_cart(self, request, pk):
+        if request.method == 'POST':
+            return self.save(ShoppingCart, request.user, pk)
+        return self.remove(ShoppingCart, request.user, pk)
 
     @action(detail=False, methods=['GET'])
     def download_shopping_cart(self, request):
-        """
-        Скачивает список покупок
-        """
+        """ Скачивает список покупок. """
         ingredients = IngredientToRecipe.objects.filter(
             recipe__shopping_list__user=request.user
         ).order_by('ingredient__name').values(
             'ingredient__name', 'ingredient__measurement_unit'
-        ).annotate(amount=Sum('amount'))
+        ).annotate(total=Sum('amount'))
         return self.send_message(ingredients)
+
+    def save(self, model, user, pk):
+        if model.objects.filter(user=user, recipe__id=pk).exists():
+            return Response({'errors': 'The recipe has been added!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        recipe = get_object_or_404(Recipe, id=pk)
+        obj = model.objects.create(user=user, recipe=recipe)
+        if self.shopping_cart:
+            serializer = ShoppingCartSerializer(obj)
+        elif self.favorite:
+            serializer = FavoriteSerializer(obj)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def remove(self, model, user, pk):
+        obj = model.objects.filter(user=user, recipe__id=pk)
+        if obj.exists():
+            obj.delete()
+            return Response({'message':
+                             'The recipe has been successfully deleted.'},
+                            status=status.HTTP_204_NO_CONTENT)
+        return Response({'errors': 'The recipe has been deleted!'},
+                        status=status.HTTP_400_BAD_REQUEST)
