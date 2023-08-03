@@ -6,8 +6,8 @@ from django.contrib.auth import get_user_model
 from .models import (Tag, Recipe, Ingredient, Follow,
                      IngredientToRecipe, ShoppingCart, Favorite)
 from .serializers import (
-    UserCreateSerializer, UserSerializer, 
-    CustomUserSerializer)
+    UserCreateSerializer, UserSerializer,
+)
 
 User = get_user_model()
 
@@ -238,9 +238,9 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         for ingredient in ingredients:
             ingredient_liist.append(
                 IngredientToRecipe(
-                recipe=recipe,
-                ingredient_id=ingredient.get('id'),
-                amount=ingredient.get('amount'),
+                    recipe=recipe,
+                    ingredient_id=ingredient.get('id'),
+                    amount=ingredient.get('amount'),
                 )
             )
         IngredientToRecipe.objects.bulk_create(ingredient_liist)

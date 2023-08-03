@@ -33,11 +33,11 @@ class MyFilterSet(django_filters.rest_framework.FilterSet):
         if value:
             return queryset.filter(shopping_cart__user=self.request.user)
         return queryset
+
     def filter_is_favorited(self, queryset, name, value):
         if value:
             return queryset.filter(infavorite__user=self.request.user)
         return queryset
-    
 
     class Meta:
         model = Recipe

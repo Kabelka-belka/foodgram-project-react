@@ -60,8 +60,8 @@ class FollowMixin(
             user=request.user, author=author).exists()
 
         if not instance:
-            raise serializers.ValidationError( 
-                'Вы не подписаны на этого пользователя' 
+            raise serializers.ValidationError(
+                'Вы не подписаны на этого пользователя'
             )
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -119,7 +119,6 @@ class RecipeWiewSet(viewsets.ModelViewSet):
         if request.method == 'POST':
             return self.save(ShoppingCart, request.user, pk)
         return self.remove(ShoppingCart, request.user, pk)
-
 
     @staticmethod
     def list_ingredients(ingredients):
