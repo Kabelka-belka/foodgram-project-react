@@ -133,7 +133,6 @@ class RecipeWiewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename="{file}.txt"'
         return response
 
-
     @action(detail=False, methods=['GET'])
     def download_shopping_cart(self, request):
         """ Скачивает список покупок. """
