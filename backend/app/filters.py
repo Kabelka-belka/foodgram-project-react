@@ -29,13 +29,15 @@ class MyFilterSet(django_filters.rest_framework.FilterSet):
     is_in_shopping_cart = django_filters.NumberFilter(
         method='filter_shopping_cart')
 
-    def filter_shopping_cart(self, qs, name, value):
-        if value == 1:
-            return qs.filter(shopping_list__user=self.request.user)
-
-    def filter_is_favorited(self, qs, name, value):
-        if value == 1:
-            return qs.filter(favorites__user=self.request.user)
+    def filter_shopping_cart(self, queryset, name, value):
+        if value:
+            return queryset.filter(shopping_cart__user=self.request.user)
+        return queryset
+    def filter_is_favorited(self, queryset, name, value):
+        if value:
+            return queryset.filter(infavorite__user=self.request.user)
+        return queryset
+    
 
     class Meta:
         model = Recipe

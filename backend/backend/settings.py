@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='django.db.backends.postgresql')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     'colorfield',
     'django_filters',
     'app.apps.AppConfig',
-    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
