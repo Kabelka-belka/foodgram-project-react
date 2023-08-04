@@ -1,13 +1,14 @@
 import os
+from distutils.util import strtobool
+
+from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-SECRET_KEY = os.getenv('SECRET_KEY', default='django.db.backends.postgresql')
-
-DEBUG = False
-
-ALLOWED_HOSTS = ['*']
+load_dotenv()
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = bool(strtobool(os.getenv('DEBUG', 'False')))
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 
 INSTALLED_APPS = [
