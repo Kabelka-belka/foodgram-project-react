@@ -6,10 +6,9 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 load_dotenv()
-SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = bool(strtobool(os.getenv('DEBUG', 'False')))
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
-
+SECRET_KEY = os.getenv('SECRET_KEY',)
+DEBUG = strtobool(os.getenv('DEBUG', 'False'))
+ALLOWED_HOSTS =[]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,6 +23,7 @@ INSTALLED_APPS = [
     'colorfield',
     'django_filters',
     'app.apps.AppConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -108,6 +108,9 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'app.pagination.CustomPagination',
+    'PAGE_SIZE': 10,
+
 }
 
 
@@ -115,9 +118,9 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': False,
     'SERIALIZERS': {
-        'user_create': 'users.serializers.UserRegistrationSerializer',
-        'user': 'users.serializers.CustomUserSerializer',
-        'current_user': 'users.serializers.CustomUserSerializer',
+        'user_create': 'app.serializers.UserRegistrationSerializer',
+        'user': 'app.serializers.CustomUserSerializer',
+        'current_user': 'app.serializers.CustomUserSerializer',
 
     },
     'PERMISSIONS': {

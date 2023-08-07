@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework import routers
 
 from .views import (
-    TagViewSet, RecipeWiewSet, IngredientViewSet, CustomUserViewSet,
+    index, TagViewSet, RecipeWiewSet, IngredientViewSet, CustomUserViewSet,
     FollowMixin, FollowListMixin)
 
 
@@ -30,6 +30,7 @@ router_v1.register('subscriptions',
 router_v1.register('', CustomUserViewSet)
 
 urlpatterns = [
+    path('index', index),
     path('auth/', include('djoser.urls.authtoken')),
-    path('users/', include(router_v1.urls)),
+    path('', include(router_v1.urls)),
 ]

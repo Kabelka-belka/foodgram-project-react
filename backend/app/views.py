@@ -23,6 +23,10 @@ from .pagination import CustomPagination
 User = get_user_model()
 
 
+def index(request):
+    return HttpResponse('index')
+
+
 class CustomUserViewSet(UserViewSet):
     """Переопределение сериализатора. """
 
