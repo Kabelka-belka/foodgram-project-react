@@ -54,7 +54,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'foodgram.wsgi:application'
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 DATABASES = {
