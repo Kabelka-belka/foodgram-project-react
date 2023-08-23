@@ -1,10 +1,9 @@
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+B
+ASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# SECRET_KEY = 'ta+!s9o!33glckm!o9n1&z#o+gxf%d#q@@9t+%cvz5_6c@qcha'
-# SECRET_KEY = os.getenv("SECRET_KEY",)
 SECRET_KEY = os.getenv('SECRET_KEY', default='django.db.backends.postgresql')
 DEBUG = False
 
