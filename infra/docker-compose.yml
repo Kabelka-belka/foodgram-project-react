@@ -10,7 +10,7 @@ services:
       - ./.env
 
   backend:
-    image: belka1/foodgram-project:latest
+    image: belka1/foodgram-backend
     restart: always
     volumes:
       - static_value:/app/static/
@@ -21,11 +21,11 @@ services:
       - ./.env
 
   frontend:
-    image: belka1/foodgram-project:latest
+    image: belka1/foodgram-frontend
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
-      - backend
+      - db
 
   nginx:
     image: nginx:1.21.3-alpine
@@ -44,7 +44,7 @@ services:
       - media_value:/var/html/media/
 
     depends_on:
-      - frontend
+      - backend
 
 
 volumes:
