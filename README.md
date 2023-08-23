@@ -1,2 +1,4 @@
-# praktikum_new_diplom
-http://127.0.0.1:8000/admin/ 
+![example workflow](https://github.com/Kabelka-belka/foodgram-project-react/actions/workflows/foodgram_main.yml/badge.svg)
+
+http://158.160.51.129/
+Belka@kabelka94
