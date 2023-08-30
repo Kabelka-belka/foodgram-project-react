@@ -2,7 +2,7 @@
 
 ## Сервис доступен по адресу:
 http://158.160.51.129/
-Belka@kabelka94
+
 
 ## Запуск проекта:
 
@@ -31,5 +31,5 @@ sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/dat
 sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/data/tags.json'
 
 ### 7. Данные для проверки работы приложения: Суперпользователь:
-email: blondie@gmail.com
-password: deblondharry
+email: 
+password:
