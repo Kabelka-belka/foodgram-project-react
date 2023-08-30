@@ -2,7 +2,6 @@
 
 ## Сервис доступен по адресу:
 http://158.160.36.147/
-
 ## Запуск проекта:
 ### 1. Клонируйте проект:
 https://github.com/Kabelka-belka/foodgram-project-react.git
