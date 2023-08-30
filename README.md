@@ -1,8 +1,7 @@
 ![example workflow](https://github.com/Kabelka-belka/foodgram-project-react/actions/workflows/foodgram_main.yml/badge.svg)
 
 ## Сервис доступен по адресу:
-http://158.160.51.129/
-
+http://158.160.36.147/
 
 ## Запуск проекта:
 
