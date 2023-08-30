@@ -5,7 +5,7 @@ services:
     image: postgres:13.0-alpine
     container_name: db
     volumes:
-      - db_data:/var/lib/postgresql/data:rw
+      - db_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
 
