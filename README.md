@@ -6,7 +6,6 @@ http://158.160.36.147/
 
 ### 1. Клонируйте проект:
 https://github.com/Kabelka-belka/foodgram-project-react.git
-
 ### 2. Подготовьте сервер:
 scp docker-compose.yml <username>@<host>:/home/<username>/
 scp nginx.conf <username>@<host>:/home/<username>/
