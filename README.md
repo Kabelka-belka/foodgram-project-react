@@ -31,7 +31,6 @@ sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/dat
 email: 
 password:
 
-
  sudo rm .env
             sudo touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
