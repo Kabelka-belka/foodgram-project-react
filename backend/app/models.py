@@ -1,9 +1,8 @@
 from colorfield.fields import ColorField
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.forms import ValidationError
-
 
 
 class User(AbstractUser):
@@ -36,6 +35,7 @@ class User(AbstractUser):
         max_length=150,
         blank=True,
     )
+    
     @property
     def is_user(self):
         return self.role == self.USER
@@ -51,7 +51,6 @@ class User(AbstractUser):
         ordering = ('username',)
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
-
 
 
 class Tag(models.Model):

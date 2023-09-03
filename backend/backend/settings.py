@@ -1,6 +1,8 @@
 import os
-from dotenv import load_dotenv
+
 from datetime import timedelta
+
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -43,8 +45,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'backend.urls'
 
 MIGRATION_MODULES = {       
-        'sites': 'contrib.sites.migrations'         
-    }
+        'sites': 'contrib.sites.migrations'      
+}
 
 TEMPLATES = [
     {
@@ -72,7 +74,7 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-        {
+    {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
@@ -85,8 +87,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
 
 LANGUAGE_CODE = 'ru'
 
