@@ -28,7 +28,7 @@ sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/dat
 sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/data/tags.json'
 
 ### 7. Данные для проверки работы приложения: Суперпользователь:
-email: 
+email:dr.kabelka@mail.ru
 password:
 
  sudo rm .env

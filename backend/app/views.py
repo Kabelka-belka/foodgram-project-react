@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -11,14 +10,12 @@ from rest_framework.response import Response
 
 from .filters import IngredientFilter, MyFilterSet
 from .models import (Favorite, Follow, Ingredient, IngredientToRecipe, Recipe,
-                     ShoppingCart, Tag)
+                     ShoppingCart, Tag, User)
 from .pagination import CustomPagination
 from .permissions import AuthorIsRequestUserPermission
 from .serializers import (FollowSerializer, IngredientSerializer,
                           RecipeCreateSerializer, RecipeFavoriteAndShopping,
                           RecipeReadSerializer, TegSerializer)
-
-User = get_user_model()
 
 
 def index(request):

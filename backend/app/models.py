@@ -1,10 +1,57 @@
 from colorfield.fields import ColorField
-from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.forms import ValidationError
 
-User = get_user_model()
+
+
+class User(AbstractUser):
+    USER = 'user'
+    ADMIN = 'admin'
+    ROLE_CHOICES = (
+        (USER, 'Аутентифицированный пользователь'),
+        (ADMIN, 'Администратор'),
+    )
+    username = models.CharField(
+        'Имя пользователя',
+        help_text=('Имя пользователя'),
+        max_length=150,
+        unique=True,
+    )
+    email = models.EmailField(
+        help_text=('Введите email'),
+        max_length=254,
+        unique=True,
+    )
+    first_name = models.CharField(
+        'Имя',
+        help_text=('Введите имя'),
+        max_length=150,
+        blank=True,
+    )
+    last_name = models.CharField(
+        'Фамилия',
+        help_text=('Введите фамилию'),
+        max_length=150,
+        blank=True,
+    )
+    @property
+    def is_user(self):
+        return self.role == self.USER
+
+    @property
+    def is_admin(self):
+        return self.role == self.ADMIN
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        ordering = ('username',)
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
 
 
 class Tag(models.Model):
