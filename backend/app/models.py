@@ -35,7 +35,7 @@ class User(AbstractUser):
         max_length=150,
         blank=True,
     )
-    
+
     @property
     def is_user(self):
         return self.role == self.USER
