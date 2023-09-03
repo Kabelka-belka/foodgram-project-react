@@ -1,7 +1,5 @@
-from app.models import (Favorite, Follow, Ingredient,
-                        IngredientToRecipe,
-                        Recipe, ShoppingCart, Tag,
-                        User)
+from app.models import (Favorite, Follow, Ingredient, IngredientToRecipe,
+                        Recipe, ShoppingCart, Tag, User)
 from django.contrib import admin
 
 
@@ -80,7 +78,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-# admin.site.unregister(User)
+admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Follow, FollowAdmin)
 admin.site.register(Tag, TegAdmin)

@@ -1,5 +1,4 @@
 import os
-
 from datetime import timedelta
 
 from dotenv import load_dotenv
@@ -44,9 +43,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'backend.urls'
 
-MIGRATION_MODULES = {       
-        'sites': 'contrib.sites.migrations'      
-}
+MIGRATION_MODULES = {'sites': 'contrib.sites.migrations'}
 
 TEMPLATES = [
     {
