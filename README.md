@@ -18,6 +18,7 @@ sudo apt install docker-compose
 ### 4. Соберите контейнер и выполните миграции:
 sudo docker-compose up -d --build
 sudo docker-compose exec backend python manage.py migrate
+sudo docker-compose exec backend python manage.py runserver 0:8000 --insecure 
 
 ### 5. Создайте суперюзера и соберите статику:
 sudo docker-compose exec backend python manage.py createsuperuser
