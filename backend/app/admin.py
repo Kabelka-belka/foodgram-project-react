@@ -3,7 +3,6 @@ from app.models import (Favorite, Follow, Ingredient, IngredientToRecipe,
 from django.contrib import admin
 
 
-@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = (
         'email',
@@ -79,7 +78,6 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-# admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Follow, FollowAdmin)
 admin.site.register(Tag, TegAdmin)
