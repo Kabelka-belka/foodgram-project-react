@@ -144,4 +144,4 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-RUN_SERVER_PORT = 8080
+# RUN_SERVER_PORT = 8080
