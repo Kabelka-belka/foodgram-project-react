@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'colorfield',
     'django_filters',
     'app.apps.AppConfig',
-
 ]
 
 AUTH_USER_MODEL = 'app.User'
