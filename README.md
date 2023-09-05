@@ -27,7 +27,7 @@ sudo docker-compose exec backend python manage.py collectstatic --no-input
 ### 6. Скопируйте предустановленные данные json:
 sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/data/ingredients.json'
 sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/data/tags.json'
-
+sudo docker compose exec backend python manage.py importcsv"
 ### 7. Данные для проверки работы приложения: Суперпользователь:
 email:dr.kabelka@mail.ru
 password: 12345678
