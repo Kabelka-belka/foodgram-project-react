@@ -19,7 +19,6 @@ services:
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
-      - nginx_conf:/app/infra/
 
   frontend:
     image: belka1/foodgram-frontend:latest
