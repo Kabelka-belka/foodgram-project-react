@@ -19,6 +19,7 @@ services:
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
+      - nginx_conf:/app/nginx/
 
   frontend:
     image: belka1/foodgram-frontend:latest
@@ -34,11 +35,11 @@ services:
       - "8080:80"
 
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      
       - static_value:/var/html/static/
 
       - media_value:/var/html/media/
+
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
       - ../frontend/build:/usr/share/nginx/html/
 
