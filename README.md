@@ -31,4 +31,5 @@ sudo docker compose exec backend python manage.py importcsv"
 ### 7. Данные для проверки работы приложения: Суперпользователь:
 email:dr.kabelka@mail.ru
 password: 12345678
+
 name: ann
