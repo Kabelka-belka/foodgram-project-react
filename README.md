@@ -1,6 +1,7 @@
 ![example workflow](https://github.com/Kabelka-belka/foodgram-project-react/actions/workflows/foodgram_main.yml/badge.svg)
 
 ## Сервис доступен по адресу:
+http://158.160.101.62/admin/
 http://158.160.101.62/
 ## Запуск проекта:
 
@@ -24,12 +25,7 @@ sudo docker-compose exec backend python manage.py migrate
 sudo docker-compose exec backend python manage.py createsuperuser
 sudo docker-compose exec backend python manage.py collectstatic --no-input
 
-### 6. Скопируйте предустановленные данные json:
-sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/data/ingredients.json'
-sudo docker-compose exec backend python manage.py loadmodels --path 'recipes/data/tags.json'
-sudo docker compose exec backend python manage.py importcsv"
-### 7. Данные для проверки работы приложения: Суперпользователь:
+### 6. Данные для проверки работы приложения: Суперпользователь:
 email:dr.kabelka@mail.ru
 password: 12345678
-
 name: ann
